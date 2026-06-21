@@ -146,7 +146,7 @@ function renderHomeHTML() {
           </p>
         </div>
         
-        <div class="grid grid-cols-4" style="gap: 20px; display: grid; grid-template-columns: repeat(4, 1fr); text-align: center;">
+        <div class="grid grid-cols-4" style="gap: 20px; text-align: center;">
           <!-- 1. Ragi -->
           <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.01);">
             <img src="images/products/ragi.svg" alt="Finger Millet (Ragi)" style="width: 60px; height: 60px; object-fit: contain;">
@@ -884,7 +884,7 @@ function renderAboutHTML() {
         </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; margin-bottom: 45px; align-items: center;">
+      <div class="about-grid-2">
         <div>
           <h3 class="serif-font" style="color: var(--primary); font-size: 1.6rem; margin-bottom: 12px;">Direct Farm Partnerships</h3>
           <p style="margin-bottom: 15px;">
@@ -899,7 +899,7 @@ function renderAboutHTML() {
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; margin-bottom: 45px; align-items: center;">
+      <div class="about-grid-2 reverse">
         <div style="background: #fdfcf9; padding: 10px; border-radius: 12px; border: 1px solid #eee;">
           <img src="images/traditional_wood_press.png" alt="Traditional Extraction" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
         </div>
@@ -916,7 +916,7 @@ function renderAboutHTML() {
 
       <div style="background: var(--primary); color: #fff; border-radius: 8px; padding: 35px 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px;">
         <h3 class="serif-font" style="color: #fff; margin: 0 0 10px 0; font-size: 1.6rem; letter-spacing: 0.5px;">The GrownUp Organics Promise</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin-top: 30px;">
+        <div class="about-grid-3">
           <div>
             <div style="font-size: 2.4rem; margin-bottom: 8px;">🌱</div>
             <strong style="display: block; margin-bottom: 5px; font-size: 1.05rem;">100% Organic Sourcing</strong>

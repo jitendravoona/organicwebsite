@@ -80,6 +80,44 @@ function setupEventListeners() {
             window.location.href = url;
         });
     }
+
+    // Mobile navigation drawer triggers
+    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+    const closeMobileNav = document.getElementById('close-mobile-nav');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+
+    if (mobileNavToggle) {
+        mobileNavToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (mobileNavOverlay) mobileNavOverlay.classList.add('active');
+        });
+    }
+
+    if (closeMobileNav) {
+        closeMobileNav.addEventListener('click', () => {
+            if (mobileNavOverlay) mobileNavOverlay.classList.remove('active');
+        });
+    }
+
+    if (mobileNavOverlay) {
+        mobileNavOverlay.addEventListener('click', (e) => {
+            if (e.target === mobileNavOverlay) {
+                mobileNavOverlay.classList.remove('active');
+            }
+        });
+    }
+
+    // Mobile Search Form
+    const mobileSearch = document.getElementById('mobile-search-form');
+    if (mobileSearch) {
+        mobileSearch.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = document.getElementById('mobile-search-input').value.trim();
+            let url = '/shop/?';
+            if (query) url += `search=${encodeURIComponent(query)}`;
+            window.location.href = url;
+        });
+    }
 }
 
 // ==========================================

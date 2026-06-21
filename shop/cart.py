@@ -39,13 +39,13 @@ class Cart:
     def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
-        cart = self.cart.copy()
+        product_dict = {str(p.id): p for p in products}
         
-        for product in products:
-            cart[str(product.id)]['product'] = product
-
-        for item in cart.values():
-            if 'product' in item:
+        for product_id, item_data in self.cart.items():
+            product = product_dict.get(product_id)
+            if product:
+                item = item_data.copy()
+                item['product'] = product
                 item['price'] = Decimal(item['price'])
                 item['total_price'] = item['price'] * item['quantity']
                 yield item
