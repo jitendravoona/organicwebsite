@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}GrownUp Organics Shop | All Organic Products{% endblock %}
+
+{% block content %}
+<div style="margin-top: 20px;">
+  <span class="text-muted" style="font-size:0.9rem;">
+    <a href="{% url 'shop:home' %}">Home</a> &nbsp;/&nbsp; <strong style="color:var(--primary);" id="shop-breadcrumb-active">Shop</strong>
+  </span>
+</div>
+
+<div class="shop-layout" style="margin-top: 20px;">
+  <!-- Sidebar Filters -->
+  <aside class="shop-sidebar">
+    <div class="filter-group">
+      <h3 class="filter-title">Product Category</h3>
+      <ul class="filter-links" style="list-style: none; padding: 0; margin: 0;">
+        <li>
+          <a href="{% url 'shop:shop' %}{% if search_query %}?search={{ search_query }}{% endif %}" 
+             class="filter-link-item {% if not selected_category %}active{% endif %}">
+            All Categories
+          </a>
+        </li>
+        {% for cat in categories %}
+          <li>
+            <a href="{% url 'shop:shop' %}?category={{ cat.slug }}{% if search_query %}&search={{ search_query }}{% endif %}" 
+               class="filter-link-item {% if selected_category == cat.slug %}active{% endif %}">
+              {{ cat.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </aside>
+
+  <!-- Product Catalog area -->
+  <div class="shop-content">
+    <div class="shop-toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+      <div>
+        <h2 class="serif-font" id="shop-title-heading" style="color: var(--primary); margin: 0;">
+          {% if request.GET.wishlist %}My Wishlist{% else %}Organic Products{% endif %}
+        </h2>
+        <span class="text-muted" id="results-count" style="font-size: 0.9rem;">
+          Showing {{ products|length }} products
+        </span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <label for="sort-select" style="font-size: 0.9rem; font-weight: 600;">Sort By:</label>
+        <select id="sort-select" onchange="applySorting(this.value)" style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; outline: none; background: #fff;">
+          <option value="default" {% if sort_by == 'default' %}selected{% endif %}>Default Sorting</option>
+          <option value="price-low" {% if sort_by == 'price-low' %}selected{% endif %}>Price: Low to High</option>
+          <option value="price-high" {% if sort_by == 'price-high' %}selected{% endif %}>Price: High to Low</option>
+          <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Customer Rating</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-3" id="shop-product-grid">
+      {% for product in products %}
+        {% include 'shop/partials/product_card.html' with product=product %}
+      {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #777;">
+          <h3>No products found matching your filters.</h3>
+          <p>Try clearing search queries or expanding filters.</p>
+          <a href="{% url 'shop:shop' %}" class="btn-checkout" style="display: inline-block; margin-top: 15px;">Clear Filters</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function applySorting(sortBy) {
+    const params = new URLSearchParams(window.location.search);
+    params.set('sort', sortBy);
+    window.location.search = params.toString();
+  }
+
+  // Handle Wishlist Filtering client-side if "?wishlist=1" is in search string
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('wishlist') === '1') {
+      // Set active breadcrumb and title
+      document.getElementById('shop-breadcrumb-active').textContent = 'Wishlist';
+      document.getElementById('shop-title-heading').textContent = 'My Wishlist';
+      
+      const wishlist = JSON.parse(localStorage.getItem('grownup_wishlist')) || [];
+      const cards = document.querySelectorAll('#shop-product-grid .product-card');
+      let shownCount = 0;
+
+      cards.forEach(card => {
+        const id = parseInt(card.getAttribute('data-id'));
+        if (wishlist.includes(id)) {
+          card.style.display = 'block';
+          shownCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('results-count').textContent = `Showing ${shownCount} wishlisted items`;
+      
+      if (shownCount === 0) {
+        document.getElementById('shop-product-grid').innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #777;">
+            <h3>Your wishlist is empty.</h3>
+            <p>Go browse products and tap the hearts to save them here!</p>
+            <a href="{% url 'shop:shop' %}" class="btn-checkout" style="display: inline-block; margin-top: 15px;">Shop Now</a>
+          </div>
+        `;
+      }
+    }
+  })();
+</script>
+{% endblock %}

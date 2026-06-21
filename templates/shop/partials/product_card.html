@@ -1,0 +1,61 @@
+{% load static %}
+<article class="product-card" data-id="{{ product.id }}" data-category="{{ product.category.slug }}">
+  {% if product.badge %}
+    <span class="product-badge sale">{{ product.badge }}</span>
+  {% elif product.discount_percent > 0 %}
+    <span class="product-badge sale">{{ product.discount_percent }}% OFF</span>
+  {% endif %}
+  
+  <button class="product-wishlist-btn" 
+          data-id="{{ product.id }}"
+          onclick="event.stopPropagation(); toggleWishlist({{ product.id }})" 
+          aria-label="Toggle Wishlist">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+  </button>
+
+  <div class="product-image-container" onclick="window.location.href='{% url 'shop:product_detail' product.id product.slug %}'">
+    <img src="{% static product.image %}" alt="{{ product.name }}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=400'">
+  </div>
+
+  <div class="product-info">
+    <span class="product-card-category">{{ product.category.name }}</span>
+    <h3 class="product-card-title" onclick="window.location.href='{% url 'shop:product_detail' product.id product.slug %}'">{{ product.name }}</h3>
+    
+    <div class="product-rating-wrap">
+      <span class="stars" style="color: #d4a373;">
+        {% if product.rating >= 4.7 %}★★★★★{% elif product.rating >= 4.3 %}★★★★☆{% else %}★★★☆☆{% endif %}
+      </span>
+      <span class="rating-count">({{ product.reviews }})</span>
+    </div>
+
+    <div class="product-card-footer">
+      <div class="product-price-block">
+        <span class="product-price-current">₹{{ product.price }}</span>
+        {% if product.oldPrice %}
+          <span class="product-price-old">₹{{ product.oldPrice }}</span>
+        {% endif %}
+      </div>
+      <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart({{ product.id }}, 1)">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21a1 1 0 1 0 0 2 1 1 0 1 0 0-2z"></path><path d="M20 21a1 1 0 1 0 0 2 1 1 0 1 0 0-2z"></path><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        Add
+      </button>
+    </div>
+    <button class="btn-quick-view" onclick="event.stopPropagation(); openQuickView({{ product.id }})" style="width:100%; margin-top:10px; border:1px solid var(--primary); background:none; color:var(--primary); padding:6px; font-size:0.8rem; border-radius:4px; cursor:pointer; font-weight:600; transition:all 0.2s;">Quick View</button>
+  </div>
+</article>
+
+<script>
+  // Dynamic Wishlist Heart Icon Hydration
+  (function() {
+    const pId = {{ product.id }};
+    const wishlist = JSON.parse(localStorage.getItem('grownup_wishlist')) || [];
+    if (wishlist.includes(pId)) {
+      const btn = document.querySelector(`.product-wishlist-btn[data-id="${pId}"]`);
+      if (btn) {
+        btn.classList.add('active');
+        const svg = btn.querySelector('svg');
+        if (svg) svg.setAttribute('fill', 'currentColor');
+      }
+    }
+  })();
+</script>

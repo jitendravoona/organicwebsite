@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}GrownUp Organics | Pure & Healthy Village Organics{% endblock %}
+
+{% block content %}
+<!-- Hero Slider -->
+<section class="hero-slider" id="hero-slider-container">
+  <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-tag">100% Cold Pressed</span>
+      <h2 class="slide-title serif-font">Pure Wood Pressed Oils</h2>
+      <p class="slide-desc">Retain natural aroma, vitamins, and health benefits with our cold pressed oils. Sourced from organic seeds.</p>
+      <a href="{% url 'shop:shop' %}?category=cold-pressed-oils" class="btn-shop-now">Shop Oils Now</a>
+    </div>
+  </div>
+  <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1509358271058-acd22cc93898?q=80&w=1200')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-tag">Heritage Spices</span>
+      <h2 class="slide-title serif-font">Authentic Hand-ground Spices</h2>
+      <p class="slide-desc">Freshly blended spices following heritage recipes, dry roasted and ground to perfection.</p>
+      <a href="{% url 'shop:shop' %}?category=spices" class="btn-shop-now">Browse Spices</a>
+    </div>
+  </div>
+  <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1600271886742-f049cd451bba?q=80&w=1200')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-tag">Ancient Superfoods</span>
+      <h2 class="slide-title serif-font">Nutritious Organic Millets</h2>
+      <p class="slide-desc">100% Gluten-free superfoods packed with dietary fiber, iron, calcium, and minerals. Perfect healthy alternative to white rice.</p>
+      <a href="{% url 'shop:shop' %}?category=millets" class="btn-shop-now">Browse Millets</a>
+    </div>
+  </div>
+  
+  <div class="slider-dots">
+    <span class="dot active" onclick="setSlide(0)"></span>
+    <span class="dot" onclick="setSlide(1)"></span>
+    <span class="dot" onclick="setSlide(2)"></span>
+  </div>
+</section>
+
+<!-- Categories Circular Grid -->
+<section class="section-padding">
+  <div class="section-header">
+    <div class="section-title-wrap">
+      <h2 class="serif-font">Shop By Categories</h2>
+    </div>
+  </div>
+  <div class="grid grid-cols-3">
+    <div class="category-card" onclick="window.location.href='{% url 'shop:shop' %}?category=cold-pressed-oils'">
+      <div class="category-image-wrap">
+        <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?q=80&w=200" alt="Oils" onerror="this.src='{% static 'images/placeholder_category.jpg' %}'">
+      </div>
+      <h3 class="category-name">Cold Pressed Oils</h3>
+      <span class="category-count">6 Items</span>
+    </div>
+    <div class="category-card" onclick="window.location.href='{% url 'shop:shop' %}?category=spices'">
+      <div class="category-image-wrap">
+        <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?q=80&w=200" alt="Spices" onerror="this.src='{% static 'images/placeholder_category.jpg' %}'">
+      </div>
+      <h3 class="category-name">Organic Spices</h3>
+      <span class="category-count">11 Items</span>
+    </div>
+    <div class="category-card" onclick="window.location.href='{% url 'shop:shop' %}?category=millets'">
+      <div class="category-image-wrap">
+        <img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?q=80&w=200" alt="Millets" onerror="this.src='{% static 'images/placeholder_category.jpg' %}'">
+      </div>
+      <h3 class="category-name">Organic Millets</h3>
+      <span class="category-count">8 Items</span>
+    </div>
+  </div>
+</section>
+
+<!-- Millets Showcase Section -->
+<section class="section-padding" style="background: #fdfcf9; border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin-top: 20px; padding: 50px 0;">
+  <div class="container">
+    <div style="text-align: center; max-width: 700px; margin: 0 auto 45px auto;">
+      <span class="slide-tag" style="background: var(--primary); color: #fff; padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Ancient Grains</span>
+      <h2 class="serif-font" style="color: var(--primary); margin-top: 15px; font-size: 2.3rem;">Explore Our Nutritious Millets</h2>
+      <p style="color: #666; font-size: 1rem; line-height: 1.5; margin-top: 10px;">
+        Discover the power of gluten-free ancient grains. Rich in essential minerals, dietary fiber, and protein, millets make a perfect daily alternative to white rice and refined wheat.
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-4" style="gap: 20px; display: grid; grid-template-columns: repeat(4, 1fr);">
+      <!-- 1. Ragi -->
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.04)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.01)'">
+        <img src="{% static 'images/products/ragi.svg' %}" alt="Finger Millet (Ragi)" style="width: 60px; height: 60px; object-fit: contain;">
+        <h4 style="margin: 5px 0 0 0; color: var(--primary); font-size: 1.05rem; font-weight: 700;">Finger Millet (Ragi)</h4>
+        <p style="font-size: 0.8rem; color: #666; line-height: 1.45; margin: 0; flex-grow: 1;">Sprouted grains packed with calcium. Perfect for porridges, rotis, and dosa batter.</p>
+        <a href="{% url 'shop:shop' %}?category=millets" style="font-size: 0.85rem; color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 10px; display: inline-block;">Shop Ragi →</a>
+      </div>
+
+      <!-- 2. Foxtail -->
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.04)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.01)'">
+        <img src="{% static 'images/products/foxtail_millet.svg' %}" alt="Foxtail Millet" style="width: 60px; height: 60px; object-fit: contain;">
+        <h4 style="margin: 5px 0 0 0; color: var(--primary); font-size: 1.05rem; font-weight: 700;">Foxtail Millet</h4>
+        <p style="font-size: 0.8rem; color: #666; line-height: 1.45; margin: 0; flex-grow: 1;">Unpolished grains rich in protein and iron. Excellent low-glycemic replacement for white rice.</p>
+        <a href="{% url 'shop:shop' %}?category=millets" style="font-size: 0.85rem; color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 10px; display: inline-block;">Shop Foxtail →</a>
+      </div>
+
+      <!-- 3. Bajra -->
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.04)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.01)'">
+        <img src="{% static 'images/products/bajra.svg' %}" alt="Pearl Millet (Bajra)" style="width: 60px; height: 60px; object-fit: contain;">
+        <h4 style="margin: 5px 0 0 0; color: var(--primary); font-size: 1.05rem; font-weight: 700;">Pearl Millet (Bajra)</h4>
+        <p style="font-size: 0.8rem; color: #666; line-height: 1.45; margin: 0; flex-grow: 1;">Rich in magnesium and essential nutrients, ideal for traditional bajra rotis and porridge.</p>
+        <a href="{% url 'shop:shop' %}?category=millets" style="font-size: 0.85rem; color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 10px; display: inline-block;">Shop Bajra →</a>
+      </div>
+
+      <!-- 4. Little Millet -->
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.04)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.01)'">
+        <img src="{% static 'images/products/little_millet.svg' %}" alt="Little Millet" style="width: 60px; height: 60px; object-fit: contain;">
+        <h4 style="margin: 5px 0 0 0; color: var(--primary); font-size: 1.05rem; font-weight: 700;">Little Millet (Kutki)</h4>
+        <p style="font-size: 0.8rem; color: #666; line-height: 1.45; margin: 0; flex-grow: 1;">Highly nutritious, easy to digest, and rich in antioxidants. Perfect for upma, pongal, or kheer.</p>
+        <a href="{% url 'shop:shop' %}?category=millets" style="font-size: 0.85rem; color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 10px; display: inline-block;">Shop Little →</a>
+      </div>
+
+      <!-- 5. Kodo -->
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.04)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.01)'">
+        <img src="{% static 'images/products/kodo_millet.svg' %}" alt="Kodo Millet" style="width: 60px; height: 60px; object-fit: contain;">
+        <h4 style="margin: 5px 0 0 0; color: var(--primary); font-size: 1.05rem; font-weight: 700;">Kodo Millet (Kodra)</h4>
+        <p style="font-size: 0.8rem; color: #666; line-height: 1.45; margin: 0; flex-grow: 1;">Excellent source of dietary fiber, iron, and vitamin B6. Great for heart health and sugar control.</p>
+        <a href="{% url 'shop:shop' %}?category=millets" style="font-size: 0.85rem; color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 10px; display: inline-block;">Shop Kodo →</a>
+      </div>
+
+      <!-- 6. Barnyard -->
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.04)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.01)'">
+        <img src="{% static 'images/products/barnyard_millet.svg' %}" alt="Barnyard Millet" style="width: 60px; height: 60px; object-fit: contain;">
+        <h4 style="margin: 5px 0 0 0; color: var(--primary); font-size: 1.05rem; font-weight: 700;">Barnyard Millet</h4>
+        <p style="font-size: 0.8rem; color: #666; line-height: 1.45; margin: 0; flex-grow: 1;">Pesticide-free grains with low carbs and digestible proteins. Sourced for vrats and idli batters.</p>
+        <a href="{% url 'shop:shop' %}?category=millets" style="font-size: 0.85rem; color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 10px; display: inline-block;">Shop Barnyard →</a>
+      </div>
+
+      <!-- 7. Browntop -->
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.04)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.01)'">
+        <img src="{% static 'images/products/browntop_millet.svg' %}" alt="Browntop Millet" style="width: 60px; height: 60px; object-fit: contain;">
+        <h4 style="margin: 5px 0 0 0; color: var(--primary); font-size: 1.05rem; font-weight: 700;">Browntop Millet</h4>
+        <p style="font-size: 0.8rem; color: #666; line-height: 1.45; margin: 0; flex-grow: 1;">Highest fiber content (12.5%) among millets. Promotes digestive wellness and detoxification.</p>
+        <a href="{% url 'shop:shop' %}?category=millets" style="font-size: 0.85rem; color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 10px; display: inline-block;">Shop Browntop →</a>
+      </div>
+
+      <!-- 8. Jowar -->
+      <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.04)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.01)'">
+        <img src="{% static 'images/products/sorghum.svg' %}" alt="Sorghum (Jowar)" style="width: 60px; height: 60px; object-fit: contain;">
+        <h4 style="margin: 5px 0 0 0; color: var(--primary); font-size: 1.05rem; font-weight: 700;">Sorghum (Jowar)</h4>
+        <p style="font-size: 0.8rem; color: #666; line-height: 1.45; margin: 0; flex-grow: 1;">Gluten-free grains rich in iron, protein, and copper. Perfect for grinding into jowar bhakri flour.</p>
+        <a href="{% url 'shop:shop' %}?category=millets" style="font-size: 0.85rem; color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 10px; display: inline-block;">Shop Sorghum →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Promotional Banners -->
+<section class="promo-banners">
+  <div class="promo-banner-card" style="background-image: url('https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=600')">
+    <div class="promo-banner-overlay"></div>
+    <div class="promo-banner-content">
+      <span class="promo-tag">Organic Seasonings</span>
+      <h3 class="promo-title serif-font">Pure Hand-ground Spices</h3>
+      <p>Get turmeric, chili powder and traditional masalas ground slowly at low temps.</p>
+      <a href="{% url 'shop:shop' %}?category=spices" class="promo-link">Shop Spices 
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+  </div>
+  <div class="promo-banner-card" style="background-image: url('https://images.unsplash.com/photo-1615485290382-441e4d049cb5?q=80&w=600')">
+    <div class="promo-banner-overlay"></div>
+    <div class="promo-banner-content">
+      <span class="promo-tag">100% Organic</span>
+      <h3 class="promo-title serif-font">Salem Turmeric & Bold Cardamom</h3>
+      <p>Directly harvested from organic estates in Salem and Idukki.</p>
+      <a href="{% url 'shop:shop' %}?category=spices" class="promo-link">Explore Spices 
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products Tabs -->
+<section class="section-padding">
+  <div class="section-header">
+    <div class="section-title-wrap">
+      <h2 class="serif-font">Featured Products</h2>
+    </div>
+    <div class="tabs-navigation">
+      <button class="tab-btn active" onclick="filterHomeProducts('all', this)">All</button>
+      <button class="tab-btn" onclick="filterHomeProducts('cold-pressed-oils', this)">Oils</button>
+      <button class="tab-btn" onclick="filterHomeProducts('spices', this)">Spices</button>
+      <button class="tab-btn" onclick="filterHomeProducts('millets', this)">Millets</button>
+    </div>
+  </div>
+  
+  <!-- Product Grid -->
+  <div class="grid grid-cols-4" id="home-featured-grid">
+    {% for product in featured_products %}
+      {% include 'shop/partials/product_card.html' with product=product %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

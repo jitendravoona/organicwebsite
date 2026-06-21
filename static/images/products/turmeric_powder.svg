@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+        <rect width="300" height="300" fill="#fffde7" />
+        <path d="M80 130 C80 100, 220 100, 220 130 C220 180, 80 180, 80 130 Z" fill="#fbc02d" />
+        <path d="M110 160 C110 140, 190 140, 190 160 C190 200, 110 200, 110 160 Z" fill="#f57f17" />
+        <text x="150" y="270" font-family="sans-serif" font-size="16" font-weight="bold" fill="#f57f17" text-anchor="middle">TURMERIC POWDER</text>
+    </svg>

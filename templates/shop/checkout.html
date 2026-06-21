@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout | GrownUp Organics{% endblock %}
+
+{% block content %}
+<div style="margin-top: 20px;">
+  <span class="text-muted" style="font-size:0.9rem;">
+    <a href="{% url 'shop:home' %}">Home</a> &nbsp;/&nbsp; <a href="{% url 'shop:cart' %}">Cart</a> &nbsp;/&nbsp; <strong style="color:var(--primary);">Checkout</strong>
+  </span>
+</div>
+
+<h1 class="serif-font" style="color: var(--primary); margin-top: 20px; margin-bottom: 20px;">Secure Checkout</h1>
+
+<div class="checkout-layout" style="display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 40px; align-items: start;">
+  <!-- Left Side: Shipping Address & Payment Forms -->
+  <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+    <h3 class="serif-font" style="color: var(--primary); margin: 0 0 20px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Shipping Information</h3>
+    
+    <form method="post" action="{% url 'shop:checkout' %}" id="checkout-form" style="display: flex; flex-direction: column; gap: 20px;">
+      {% csrf_token %}
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="form-group-full">
+          <label class="input-label" style="font-weight:600; display:block; margin-bottom:6px;">Full Name *</label>
+          <input type="text" name="name" class="form-input" required placeholder="Enter full name" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;">
+        </div>
+        <div class="form-group-full">
+          <label class="input-label" style="font-weight:600; display:block; margin-bottom:6px;">Mobile Number *</label>
+          <input type="tel" name="phone" pattern="[0-9]{10}" class="form-input" required placeholder="10-digit number" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;">
+        </div>
+      </div>
+
+      <div class="form-group-full">
+        <label class="input-label" style="font-weight:600; display:block; margin-bottom:6px;">Email Address *</label>
+        <input type="email" name="email" class="form-input" required placeholder="name@example.com" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;">
+      </div>
+
+      <div class="form-group-full">
+        <label class="input-label" style="font-weight:600; display:block; margin-bottom:6px;">Delivery Street Address *</label>
+        <textarea name="address" rows="3" class="form-input" required placeholder="House number, apartment, street details" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-family:inherit; resize:vertical;"></textarea>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="form-group-full">
+          <label class="input-label" style="font-weight:600; display:block; margin-bottom:6px;">City / Town *</label>
+          <input type="text" name="city" class="form-input" required placeholder="e.g. Bangalore" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;">
+        </div>
+        <div class="form-group-full">
+          <label class="input-label" style="font-weight:600; display:block; margin-bottom:6px;">Pincode / Postal Code *</label>
+          <input type="text" name="pincode" pattern="[0-9]{6}" class="form-input" required placeholder="6-digit pincode" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;">
+        </div>
+      </div>
+
+      <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 20px;">
+        <h3 class="serif-font" style="color: var(--primary); margin: 0 0 15px 0;">Select Payment Method</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Cash on Delivery Option -->
+          <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; background: #fdfcf9;">
+            <input type="radio" name="payment_method" value="COD" checked onclick="toggleCardForm(false)">
+            <div>
+              <strong style="color: var(--primary);">Cash on Delivery (COD)</strong>
+              <div style="font-size: 0.8rem; color: #777; margin-top: 3px;">Pay in cash or UPI at the time of delivery. No extra fees.</div>
+            </div>
+          </label>
+
+          <!-- Mock Online Card Option -->
+          <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #eee; border-radius: 6px; cursor: pointer; transition: background 0.2s;">
+            <input type="radio" name="payment_method" value="ONLINE" onclick="toggleCardForm(true)">
+            <div>
+              <strong>Online Credit / Debit Card</strong>
+              <div style="font-size: 0.8rem; color: #777; margin-top: 3px;">Mock online payment (no real charges applied).</div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Mock Credit Card Input fields -->
+        <div id="mock-card-fields" style="display: none; margin-top: 15px; padding: 15px; border: 1px dashed #ccc; border-radius: 6px; background: #fafafa; flex-direction: column; gap: 12px;">
+          <div class="form-group-full">
+            <label class="input-label" style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">Card Number</label>
+            <input type="text" placeholder="1111 - 2222 - 3333 - 4444" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+          </div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+            <div class="form-group-full">
+              <label class="input-label" style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">Expiry Date</label>
+              <input type="text" placeholder="MM / YY" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+            </div>
+            <div class="form-group-full">
+              <label class="input-label" style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">CVV</label>
+              <input type="password" placeholder="***" maxlength="3" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-checkout" style="width: 100%; padding: 14px; font-size: 1.1rem; font-weight: 700; margin-top: 15px;">
+        Place Order Now (₹{{ cart.get_total }})
+      </button>
+    </form>
+  </div>
+
+  <!-- Right Side: Items Summary review -->
+  <div style="background: #fdfcf9; border: 1px solid #eee; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 15px;">
+    <h3 class="serif-font" style="color: var(--primary); margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Review Order</h3>
+    
+    <div style="display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; padding-right: 5px;">
+      {% for item in cart %}
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem;">
+          <div style="display: flex; align-items: center; gap: 10px; text-align: left;">
+            <img src="{% static item.product.image %}" alt="" style="width: 40px; height: 40px; object-fit: contain; background: #fff; border-radius: 4px; border: 1px solid #eee;">
+            <div>
+              <div style="font-weight: 700; color: var(--primary); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.product.name }}</div>
+              <div style="color: #777;">Qty: {{ item.quantity }}</div>
+            </div>
+          </div>
+          <span style="font-weight: 600;">₹{{ item.total_price }}</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div style="border-top: 1px solid #eee; padding-top: 15px; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem;">
+      <div style="display: flex; justify-content: space-between;">
+        <span>Subtotal:</span>
+        <span style="font-weight: 600;">₹{{ cart.get_subtotal }}</span>
+      </div>
+      {% if cart.get_discount > 0 %}
+        <div style="display: flex; justify-content: space-between; color: #2a9d8f;">
+          <span>Discount ({{ cart.coupon_code }}):</span>
+          <span style="font-weight: 600;">-₹{{ cart.get_discount }}</span>
+        </div>
+      {% endif %}
+      <div style="display: flex; justify-content: space-between;">
+        <span>Shipping Cost:</span>
+        <span style="font-weight: 600;">
+          {% if cart.get_shipping == 0 %}FREE{% else %}₹{{ cart.get_shipping }}{% endif %}
+        </span>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 700; color: var(--primary); border-top: 1px dashed #ccc; padding-top: 10px;">
+        <span>Grand Total:</span>
+        <span>₹{{ cart.get_total }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function toggleCardForm(show) {
+    const fields = document.getElementById('mock-card-fields');
+    if (fields) {
+      fields.style.display = show ? 'flex' : 'none';
+      const inputs = fields.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.required = show;
+      });
+    }
+    
+    // Toggle active box style
+    const labels = document.querySelectorAll('input[name="payment_method"]');
+    labels.forEach(radio => {
+      const parentLabel = radio.closest('label');
+      if (radio.checked) {
+        parentLabel.style.border = '1px solid var(--primary)';
+        parentLabel.style.background = '#fdfcf9';
+      } else {
+        parentLabel.style.border = '1px solid #eee';
+        parentLabel.style.background = 'none';
+      }
+    });
+  }
+</script>
+{% endblock %}

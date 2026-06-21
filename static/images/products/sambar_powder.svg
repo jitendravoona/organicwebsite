@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+        <rect width="300" height="300" fill="#fbe9e7" />
+        <polygon points="150,50 250,150 150,250 50,150" fill="#e64a19" />
+        <circle cx="150" cy="150" r="40" fill="#ff7043" />
+        <text x="150" y="280" font-family="sans-serif" font-size="16" font-weight="bold" fill="#e64a19" text-anchor="middle">SAMBAR POWDER</text>
+    </svg>

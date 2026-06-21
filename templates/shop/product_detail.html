@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | GrownUp Organics{% endblock %}
+
+{% block content %}
+<div style="margin-top: 20px;">
+  <span class="text-muted" style="font-size:0.9rem;">
+    <a href="{% url 'shop:home' %}">Home</a> &nbsp;/&nbsp; 
+    <a href="{% url 'shop:shop' %}?category={{ product.category.slug }}">{{ product.category.name }}</a> &nbsp;/&nbsp; 
+    <strong style="color:var(--primary);">{{ product.name }}</strong>
+  </span>
+</div>
+
+<div class="product-detail-layout" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; margin-top: 25px; align-items: start;">
+  <!-- Left Side: Product Gallery -->
+  <div class="product-detail-gallery" style="background: #faf8f5; border-radius: 8px; padding: 30px; display: flex; align-items: center; justify-content: center; position: relative;">
+    {% if product.badge %}
+      <span class="product-badge sale" style="top: 15px; left: 15px; font-size: 0.9rem;">{{ product.badge }}</span>
+    {% elif product.discount_percent > 0 %}
+      <span class="product-badge sale" style="top: 15px; left: 15px; font-size: 0.9rem;">{{ product.discount_percent }}% OFF</span>
+    {% endif %}
+
+    <button class="product-wishlist-btn" 
+            data-id="{{ product.id }}"
+            onclick="toggleWishlist({{ product.id }})" 
+            style="position: absolute; top: 15px; right: 15px; width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;"
+            aria-label="Toggle Wishlist">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+    </button>
+
+    <img src="{% static product.image %}" alt="{{ product.name }}" style="max-width: 100%; max-height: 400px; object-fit: contain; transform: scale(1); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+  </div>
+
+  <!-- Right Side: Details Info -->
+  <div class="product-detail-info" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+    <span class="product-card-category" style="font-size: 0.95rem; font-weight: 700; color: var(--secondary);">{{ product.category.name }}</span>
+    <h1 class="serif-font" style="color: var(--primary); margin: 0; font-size: 2.2rem; line-height: 1.2;">{{ product.name }}</h1>
+
+    <div class="product-rating-wrap" style="display: flex; align-items: center; gap: 8px;">
+      <span class="stars" style="color: #d4a373; font-size: 1.1rem;">
+        {% if product.rating >= 4.7 %}★★★★★{% elif product.rating >= 4.3 %}★★★★☆{% else %}★★★☆☆{% endif %}
+      </span>
+      <span class="rating-count" style="font-size: 0.9rem; color: #777;">({{ product.reviews }} customer reviews)</span>
+    </div>
+
+    <div class="product-price-block" style="display: flex; align-items: center; gap: 12px; font-size: 1.6rem; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+      <span class="product-price-current" style="font-weight: 700; color: var(--primary);">₹{{ product.price }}</span>
+      {% if product.oldPrice %}
+        <span class="product-price-old" style="text-decoration: line-through; color: #999; font-size: 1.2rem;">₹{{ product.oldPrice }}</span>
+      {% endif %}
+    </div>
+
+    <p style="font-size: 1.05rem; line-height: 1.6; color: #555; margin: 0;">
+      {{ product.description }}
+    </p>
+
+    <!-- Specs Section -->
+    <div style="margin-top: 10px;">
+      <h3 class="serif-font" style="color: var(--primary); font-size: 1.15rem; margin-bottom: 10px;">Specifications</h3>
+      <table class="specs-table" style="width: 100%; border-collapse: collapse;">
+        <tbody>
+          {% for key, value in product.specs.items %}
+            <tr>
+              <td style="font-weight: 600; padding: 8px 12px; border-bottom: 1px solid #eee; width: 40%; background: #fdfcf9; color: var(--primary);">{{ key }}</td>
+              <td style="padding: 8px 12px; border-bottom: 1px solid #eee; color: #555;">{{ value }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Actions block -->
+    <div style="display: flex; gap: 20px; align-items: center; margin-top: 15px; border-top: 1px solid #eee; padding-top: 20px;">
+      <div style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; background: #fff;">
+        <button onclick="let input = document.getElementById('product-qty'); input.value = Math.max(1, parseInt(input.value) - 1)" style="border: none; padding: 10px 16px; background: none; cursor: pointer; font-weight: bold; font-size: 1.1rem;">-</button>
+        <input type="number" id="product-qty" value="1" min="1" readonly style="width: 50px; text-align: center; border: none; font-weight: 700; font-size: 1.1rem;">
+        <button onclick="let input = document.getElementById('product-qty'); input.value = parseInt(input.value) + 1" style="border: none; padding: 10px 16px; background: none; cursor: pointer; font-weight: bold; font-size: 1.1rem;">+</button>
+      </div>
+      
+      <button class="btn-checkout" onclick="addPageQtyToCart()" style="margin: 0; padding: 12px 36px; font-size: 1.05rem; font-weight: 700; flex-grow: 1;">
+        Add to Shopping Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Related Products -->
+<section class="section-padding" style="margin-top: 50px; border-top: 1px solid #eee;">
+  <div class="section-header">
+    <div class="section-title-wrap">
+      <h2 class="serif-font" style="color: var(--primary);">Related Products</h2>
+    </div>
+  </div>
+  <div class="grid grid-cols-4">
+    {% for rel in related_products %}
+      {% include 'shop/partials/product_card.html' with product=rel %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function addPageQtyToCart() {
+    const qty = parseInt(document.getElementById('product-qty').value) || 1;
+    addToCart({{ product.id }}, qty);
+  }
+
+  // Wishlist Icon Sync on page load
+  (function() {
+    const pId = {{ product.id }};
+    const wishlist = JSON.parse(localStorage.getItem('grownup_wishlist')) || [];
+    if (wishlist.includes(pId)) {
+      const btn = document.querySelector(`.product-wishlist-btn[data-id="${pId}"]`);
+      if (btn) {
+        btn.classList.add('active');
+        const svg = btn.querySelector('svg');
+        if (svg) svg.setAttribute('fill', 'currentColor');
+      }
+    }
+  })();
+</script>
+{% endblock %}

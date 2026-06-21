@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart | GrownUp Organics{% endblock %}
+
+{% block content %}
+<div style="margin-top: 20px;">
+  <span class="text-muted" style="font-size:0.9rem;">
+    <a href="{% url 'shop:home' %}">Home</a> &nbsp;/&nbsp; <strong style="color:var(--primary);">Cart</strong>
+  </span>
+</div>
+
+<h1 class="serif-font" style="color: var(--primary); margin-top: 20px; margin-bottom: 20px;">Your Shopping Cart</h1>
+
+{% if cart %}
+<div class="cart-layout" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start;">
+  <!-- Left Side: Table of items -->
+  <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: #fdfcf9; border-bottom: 1px solid #eee; color: var(--primary);">
+          <th style="padding: 15px; font-weight: 600;">Product</th>
+          <th style="padding: 15px; font-weight: 600;">Price</th>
+          <th style="padding: 15px; font-weight: 600; text-align: center;">Quantity</th>
+          <th style="padding: 15px; font-weight: 600; text-align: right;">Total</th>
+          <th style="padding: 15px; font-weight: 600; text-align: center;">Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart %}
+          <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 15px; display: flex; align-items: center; gap: 15px;">
+              <img src="{% static item.product.image %}" alt="{{ item.product.name }}" style="width: 60px; height: 60px; object-fit: contain; background: #faf8f5; border-radius: 4px; padding: 5px;">
+              <div>
+                <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}" style="font-weight: 700; color: var(--primary); text-decoration: none;">
+                  {{ item.product.name }}
+                </a>
+                <div style="font-size: 0.8rem; color: #777; margin-top: 4px;">Category: {{ item.product.category.name }}</div>
+              </div>
+            </td>
+            <td style="padding: 15px; font-weight: 600;">₹{{ item.price }}</td>
+            <td style="padding: 15px; text-align: center;">
+              <div style="display: inline-flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; background: #fff;">
+                <button onclick="updateCartQty({{ item.product.id }}, {{ item.quantity }} - 1)" style="border: none; padding: 5px 10px; background: none; cursor: pointer; font-weight: bold;">-</button>
+                <input type="number" value="{{ item.quantity }}" readonly style="width: 35px; text-align: center; border: none; font-weight: 700;">
+                <button onclick="updateCartQty({{ item.product.id }}, {{ item.quantity }} + 1)" style="border: none; padding: 5px 10px; background: none; cursor: pointer; font-weight: bold;">+</button>
+              </div>
+            </td>
+            <td style="padding: 15px; text-align: right; font-weight: 700; color: var(--primary);">₹{{ item.total_price }}</td>
+            <td style="padding: 15px; text-align: center;">
+              <button onclick="removeFromCart({{ item.product.id }})" style="background: none; border: none; color: #e63946; font-size: 1.2rem; cursor: pointer; padding: 5px;">×</button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Right Side: Order Summary -->
+  <div style="background: #fdfcf9; border: 1px solid #eee; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 15px;">
+    <h3 class="serif-font" style="color: var(--primary); margin: 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Order Summary</h3>
+    
+    <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+      <span>Subtotal:</span>
+      <span style="font-weight: 600;">₹{{ cart.get_subtotal }}</span>
+    </div>
+
+    {% if cart.get_discount > 0 %}
+      <div style="display: flex; justify-content: space-between; font-size: 0.95rem; color: #2a9d8f;">
+        <span>Promo Discount ({{ cart.coupon_code }}):</span>
+        <span style="font-weight: 600;">-₹{{ cart.get_discount }}</span>
+      </div>
+      <button onclick="removeCouponCode()" style="text-align: left; font-size: 0.8rem; background: none; border: none; color: #e63946; cursor: pointer; padding: 0; margin-top: -10px; text-decoration: underline;">
+        Remove Coupon
+      </button>
+    {% endif %}
+
+    <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+      <span>Shipping Charges:</span>
+      <span style="font-weight: 600;">
+        {% if cart.get_shipping == 0 %}
+          <span style="color: #2a9d8f; font-weight: 700;">FREE</span>
+        {% else %}
+          ₹{{ cart.get_shipping }}
+        {% endif %}
+      </span>
+    </div>
+    
+    {% if cart.get_shipping > 0 %}
+      <div style="font-size: 0.75rem; color: #777; margin-top: -10px;">
+        Add <strong>₹{{ cart.get_free_shipping_remaining }}</strong> more to get <strong>FREE Shipping</strong>!
+      </div>
+    {% endif %}
+
+    <div style="display: flex; justify-content: space-between; font-size: 1.2rem; border-top: 1px solid #eee; padding-top: 15px; font-weight: 700; color: var(--primary);">
+      <span>Total Amount:</span>
+      <span>₹{{ cart.get_total }}</span>
+    </div>
+
+    <!-- Coupon Input -->
+    {% if cart.get_discount == 0 %}
+      <div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 15px;">
+        <label for="coupon-input" style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 6px;">Have a Promo Code?</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="coupon-input" placeholder="e.g. ORGANIC10" style="flex-grow: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; outline: none; text-transform: uppercase;">
+          <button onclick="applyCouponCode()" style="padding: 8px 15px; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-weight: 600; cursor: pointer;">Apply</button>
+        </div>
+        <div style="font-size: 0.75rem; color: #777; margin-top: 5px;">Use **ORGANIC10** (10% off) or **VILLAGE20** (20% off)</div>
+      </div>
+    {% endif %}
+
+    <a href="{% url 'shop:checkout' %}" class="btn-checkout" style="text-align: center; display: block; margin-top: 10px; text-decoration: none;">
+      Proceed to Checkout
+    </a>
+  </div>
+</div>
+{% else %}
+<div style="text-align: center; padding: 100px 0; color: #777;">
+  <div style="font-size: 4rem; margin-bottom: 20px;">🛒</div>
+  <h2>Your shopping cart is currently empty.</h2>
+  <p>Fill it with our premium, healthy cold pressed oils and fresh spices.</p>
+  <a href="{% url 'shop:shop' %}" class="btn-checkout" style="display: inline-block; margin-top: 20px; text-decoration: none;">Browse Our Products</a>
+</div>
+{% endif %}
+{% endblock %}

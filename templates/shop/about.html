@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | GrownUp Organics{% endblock %}
+
+{% block content %}
+<div style="margin-top: 20px;">
+  <span class="text-muted" style="font-size:0.9rem;">
+    <a href="{% url 'shop:home' %}">Home</a> &nbsp;/&nbsp; <strong style="color:var(--primary);">About Us</strong>
+  </span>
+</div>
+
+<div style="max-width: 900px; margin: 30px auto 0 auto; text-align: left; line-height: 1.65; color: #444;">
+  <div style="text-align: center; margin-bottom: 40px;">
+    <span class="slide-tag" style="background: var(--primary); color: #fff; padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Rooted in Purity</span>
+    <h1 class="serif-font" style="color: var(--primary); margin-top: 15px; font-size: 2.6rem;">The Story of GrownUp Organics</h1>
+  </div>
+  
+  <div style="background: #faf8f5; border-radius: 8px; padding: 35px; border-left: 5px solid var(--secondary); margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.01);">
+    <h3 class="serif-font" style="color: var(--primary); margin: 0 0 10px 0; font-size: 1.3rem;">Connecting Fields to Kitchens</h3>
+    <p style="margin: 0; font-size: 1.05rem; color: #555;">
+      GrownUp Organics is born from a simple yet profound desire: to reconnect modern lives with the absolute purity of traditional, farm-grown nourishment. Located in **Palakonda, Manyam district**, we are situated in a landscape rich in agrarian heritage. We bridge the gap between hard-working rural farmers and health-conscious households, bringing you foods that are completely natural, unrefined, and chemical-free.
+    </p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; margin-bottom: 45px; align-items: center;">
+    <div>
+      <h3 class="serif-font" style="color: var(--primary); font-size: 1.6rem; margin-bottom: 12px;">Direct Farm Partnerships</h3>
+      <p style="margin-bottom: 15px;">
+        We collaborate directly with local farmer families across fertile agricultural belts. By sourcing directly from the fields of Manyam district, Salem, and coastal regions, we eliminate complex supply chains.
+      </p>
+      <p>
+        This ensures our farmers receive fair compensation and you receive the freshest harvest, keeping the integrity of organic farming alive.
+      </p>
+    </div>
+    <div style="background: #fdfcf9; padding: 10px; border-radius: 12px; border: 1px solid #eee;">
+      <img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?q=80&w=450" alt="Farmer Sourcing" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; margin-bottom: 45px; align-items: center;">
+    <div style="background: #fdfcf9; padding: 10px; border-radius: 12px; border: 1px solid #eee;">
+      <img src="{% static 'images/traditional_wood_press.png' %}" alt="Traditional Extraction" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+    </div>
+    <div>
+      <h3 class="serif-font" style="color: var(--primary); font-size: 1.6rem; margin-bottom: 12px;">Time-Tested Heritage Extraction</h3>
+      <p style="margin-bottom: 15px;">
+        Modern refined products are processed using high heat and chemical solvents which strip away important nutrients, healthy fats, and natural aromas.
+      </p>
+      <p>
+        Our oils are extracted using traditional wooden mills (*Lakdi Ghani*) at slow, cold temperatures, ensuring they never heat up and retain their essential fats and vitamins. Our spices are ground slowly at low temperatures to lock in their natural volatile oils, aromas, and flavors.
+      </p>
+    </div>
+  </div>
+
+  <div style="background: var(--primary); color: #fff; border-radius: 8px; padding: 35px 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px;">
+    <h3 class="serif-font" style="color: #fff; margin: 0 0 10px 0; font-size: 1.6rem; letter-spacing: 0.5px;">The GrownUp Organics Promise</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin-top: 30px;">
+      <div>
+        <div style="font-size: 2.4rem; margin-bottom: 8px;">🌱</div>
+        <strong style="display: block; margin-bottom: 5px; font-size: 1.05rem;">100% Organic Sourcing</strong>
+        <span style="font-size: 0.85rem; opacity: 0.85; line-height: 1.4; display: block;">Grown without synthetic pesticides or harmful chemical fertilizers.</span>
+      </div>
+      <div>
+        <div style="font-size: 2.4rem; margin-bottom: 8px;">🪵</div>
+        <strong style="display: block; margin-bottom: 5px; font-size: 1.05rem;">Lakdi Ghani Cold-Press</strong>
+        <span style="font-size: 0.85rem; opacity: 0.85; line-height: 1.4; display: block;">Slow wood pressed extraction keeping original health benefits and aromas intact.</span>
+      </div>
+      <div>
+        <div style="font-size: 2.4rem; margin-bottom: 8px;">🧪</div>
+        <strong style="display: block; margin-bottom: 5px; font-size: 1.05rem;">Zero Additive Guarantee</strong>
+        <span style="font-size: 0.85rem; opacity: 0.85; line-height: 1.4; display: block;">No artificial coloring agents, stabilizers, chemical preservatives, or fillers.</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
